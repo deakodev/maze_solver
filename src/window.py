@@ -1,7 +1,8 @@
 from tkinter import Tk, BOTH, Canvas
+from line import Line
 
 class Window:
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int) -> None:
         self.__running = False
         self.__root = Tk()
         self.__root.title("Maze Solver")
@@ -9,14 +10,17 @@ class Window:
         self.__canvas = Canvas(self.__root, bg="white", width=width, height=height)
         self.__canvas.pack(fill=BOTH, expand=1)
 
-    def redraw(self):
+    def redraw(self) -> None:
         self.__root.update_idletasks()
         self.__root.update()
     
-    def wait_for_close(self):
+    def wait_for_close(self) -> None:
         self.__running = True
         while self.__running:
             self.redraw()
     
-    def close(self):
+    def close(self) -> None:
         self.__running = False
+
+    def draw_line(self, line: Line, fill_color: str) -> None:
+        line.draw(self.__canvas, fill_color)
