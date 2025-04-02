@@ -9,6 +9,7 @@ class Window:
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
         self.__canvas = Canvas(self.__root, bg="white", width=width, height=height)
         self.__canvas.pack(fill=BOTH, expand=1)
+        print(f"Initializing window... ({width}, {height})")
 
     def redraw(self) -> None:
         self.__root.update_idletasks()
@@ -21,6 +22,7 @@ class Window:
     
     def close(self) -> None:
         self.__running = False
+        print(f"Closing window...")
 
     def draw_line(self, line: Line, fill_color: str) -> None:
         line.draw(self.__canvas, fill_color)
