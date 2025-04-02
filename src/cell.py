@@ -35,3 +35,11 @@ class Cell:
                     end = Point(self.__upper_left.x, self.__lower_right.y)
             line = Line(start, end)
             self.__window.draw_line(line, "black")
+
+    def draw_path(self, to_cell, undo=False):
+        if to_cell is None:
+            return
+        start = Point((self.__upper_left.x + self.__lower_right.x) / 2, (self.__upper_left.y + self.__lower_right.y) / 2)
+        end = Point((to_cell.__upper_left.x + to_cell.__lower_right.x) / 2, (to_cell.__upper_left.y + to_cell.__lower_right.y) / 2)
+        line = Line(start, end)
+        self.__window.draw_line(line, "red" if undo else "gray")

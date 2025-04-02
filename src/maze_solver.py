@@ -9,10 +9,13 @@ CELL_SIZE = 50
 def main():
     win = Window(WINDOW_WIDTH, WINDOW_HEIGHT)
 
-    for i in range(1, WINDOW_WIDTH, CELL_SIZE):
-        for j in range(1, WINDOW_HEIGHT, CELL_SIZE):
-            cell = Cell(win, Point(i, j), Point(i + CELL_SIZE, j + CELL_SIZE))
+    for i in range(1, WINDOW_HEIGHT, CELL_SIZE):
+        last = None
+        for j in range(1, WINDOW_WIDTH, CELL_SIZE):
+            cell = Cell(win, Point(j, i), Point(j + CELL_SIZE, i + CELL_SIZE))
             cell.draw()
+            cell.draw_path(last, True)
+            last = cell
 
     win.wait_for_close()
 
