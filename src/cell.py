@@ -12,13 +12,15 @@ def default_walls() -> set[Wall]:
     return set([Wall.Left, Wall.Right, Wall.Top, Wall.Bottom])
 
 class Cell:
-    def __init__(self, window: Window, upper_left: Point, lower_right: Point, walls: set[Wall] = default_walls()) -> None:
+    def __init__(self, upper_left: Point, lower_right: Point, walls: set[Wall] = default_walls(), window: Window = None) -> None:
         self.__window = window
         self.__upper_left = upper_left
         self.__lower_right = lower_right
-        self.walls = walls
+        self.walls = walls 
 
     def draw(self):
+        if self.__window is None:
+            return
         for wall in self.walls:
             match wall:
                 case Wall.Left:
@@ -37,9 +39,9 @@ class Cell:
             self.__window.draw_line(line, "black")
 
     def draw_path(self, to_cell: "Cell", undo=False):
-        if to_cell is None:
+        if to_cell is None or self.__window is None:
             return
-        start = Point((self.__upper_left.x + self.__lower_right.x) / 2, (self.__upper_left.y + self.__lower_right.y) / 2)
-        end = Point((to_cell.__upper_left.x + to_cell.__lower_right.x) / 2, (to_cell.__upper_left.y + to_cell.__lower_right.y) / 2)
+        start = Point((self.__upper_left.x + self.__lower_right.x) // 2, (self.__upper_left.y + self.__lower_right.y) // 2)
+        end = Point((to_cell.__upper_left.x + to_cell.__lower_right.x) // 2, (to_cell.__upper_left.y + to_cell.__lower_right.y) // 2)
         line = Line(start, end)
         self.__window.draw_line(line, "red" if undo else "gray")
