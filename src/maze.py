@@ -101,7 +101,44 @@ class Maze:
                 self._break_walls(n_row, n_col)
 
     def _reset_cells_visited(self):
-        for row in self.cells:
-            col = self.cells[row]
-            for cell in col:
+        for row in self.__cells:
+            for cell in row:
                 cell.visited = False
+
+
+    def _solve_r(self, row: int, col: int) -> bool:
+        self._animate()
+        current = self.__cells[row][col]
+        current.visited = True
+
+        # Goal check: bottom-right cell
+        if current == self.__cells[-1][-1]:
+            return True
+
+        directions = {
+            "top":    (-1, 0),
+            "bottom": (1, 0),
+            "left":   (0, -1),
+            "right":  (0, 1)
+        }
+
+        for direction, (dr, dc) in directions.items():
+            new_row, new_col = row + dr, col + dc
+
+            # Check bounds
+            if 0 <= new_row < len(self.__cells) and 0 <= new_col < len(self.__cells[0]):
+                next_cell = self.__cells[new_row][new_col]
+
+                # Check if there's no wall in the current direction and cell hasn't been visited
+                if not current._Cell__visible_walls[direction] and not next_cell.visited:
+                    current.draw_path(next_cell)
+                    if self._solve_r(new_row, new_col):
+                        return True
+                    current.draw_path(next_cell, undo=True)
+
+        return False
+    
+    def solve(self, row=0, col=0):
+        self._reset_cells_visited() 
+        return self._solve_r(row, col)
+

@@ -7,7 +7,8 @@ CELL_SIZE = 50
 
 def main():
     window = Window(WINDOW_WIDTH, WINDOW_HEIGHT)
-    Maze(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE, window=window)
+    maze = Maze(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE, window=window)
+    maze.solve()
     window.wait_for_close()
 
 if __name__ == "__main__":
