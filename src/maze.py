@@ -4,7 +4,6 @@ import time
 from cell import Cell
 from line import Point
 
-
 class Maze:
     PADDING = 50
     def __init__(self, width, height, cell_size, window=None):
@@ -13,6 +12,7 @@ class Maze:
         self.__height = height - Maze.PADDING
         self.__cell_size = cell_size
         self.__cells = self._cells()
+        self._break_entrance_and_exit()
 
     def get_cells(self):
         return self.__cells
@@ -35,3 +35,9 @@ class Maze:
     def _animate(self):
         self.__window.redraw()
         time.sleep(0.015)
+
+    def _break_entrance_and_exit(self):
+        entrance_cell = self.__cells[0]
+        entrance_cell.hide_wall("top")
+        exit_cell = self.__cells[-1]
+        exit_cell.hide_wall("bottom")

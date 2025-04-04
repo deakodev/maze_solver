@@ -1,5 +1,3 @@
-from cell import Cell, Wall
-from line import Line, Point
 from maze import Maze
 from window import Window
 
