@@ -19,15 +19,20 @@ class TestMazeAndCellFunctions(unittest.TestCase):
         cell_size = 50
         # For this test, the window does not affect the cell count logic.
         maze = Maze(width, height, cell_size, window=None)
-        cells = maze.get_cells()
+        cells = maze.get_cells()  # Now a 2D list of cells
 
         expected_rows = len(range(Maze.PADDING, height - Maze.PADDING, cell_size))
         expected_cols = len(range(Maze.PADDING, width - Maze.PADDING, cell_size))
-        expected_cells = expected_rows * expected_cols
-        self.assertEqual(len(cells), expected_cells)
 
-    def test_hide_wall_updates_visible_walls(self):
-        """Verify that hide_wall() correctly updates the internal visible walls flag."""
+        # Assert that the number of rows is as expected.
+        self.assertEqual(len(cells), expected_rows)
+        
+        # Assert that each row contains the expected number of cells.
+        for row in cells:
+            self.assertEqual(len(row), expected_cols)
+
+    def test_draw_wall_updates_visible_walls(self):
+        """Verify that draw_wall() correctly updates the internal visible walls flag."""
         dummy_window = DummyWindow()
         cell = Cell(Point(0, 0), Point(50, 50), window=dummy_window)
         # Initially, all walls should be visible.
@@ -37,7 +42,7 @@ class TestMazeAndCellFunctions(unittest.TestCase):
         self.assertTrue(cell._Cell__visible_walls["bottom"])
 
         # Hide the left wall.
-        cell.hide_wall("left")
+        cell.draw_wall("left", False)
         self.assertFalse(cell._Cell__visible_walls["left"])
 
     def test_entrance_and_exit_wall_break(self):
@@ -53,9 +58,9 @@ class TestMazeAndCellFunctions(unittest.TestCase):
         cells = maze.get_cells()
 
         # The entrance cell (first cell) should have its "top" wall hidden.
-        self.assertFalse(cells[0]._Cell__visible_walls["top"])
+        self.assertFalse(cells[0][0]._Cell__visible_walls["top"])
         # The exit cell (last cell) should have its "bottom" wall hidden.
-        self.assertFalse(cells[-1]._Cell__visible_walls["bottom"])
+        self.assertFalse(cells[-1][-1]._Cell__visible_walls["bottom"])
 
     def test_draw_path_no_state_change(self):
         """

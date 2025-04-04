@@ -13,14 +13,13 @@ class Cell:
         self.__upper_left = upper_left
         self.__lower_right = lower_right
         self.__visible_walls = { "left": True, "right": True, "top": True, "bottom": True }
+        self.visited = False
 
     def draw(self):
         if self.__window is None:
             return
-        for wall, coord_fn in WALL_MAP.items():
-            start, end = coord_fn(self.__upper_left, self.__lower_right)
-            color = "black" if self.__visible_walls[wall] else "white"
-            self.__window.draw_line(Line(start, end), color)
+        for wall in WALL_MAP.keys():
+            self.draw_wall(wall, True)
 
     def draw_path(self, to_cell: "Cell", undo = False):
         if to_cell is None or self.__window is None:
@@ -30,10 +29,11 @@ class Cell:
         line = Line(start, end)
         self.__window.draw_line(line, "red" if undo else "gray")
 
-    def hide_wall(self, wall):
+    def draw_wall(self, wall, visible):
         if self.__window is None:
             return
-        coord_fn = WALL_MAP[wall]  
+        coord_fn = WALL_MAP[wall]
         start, end = coord_fn(self.__upper_left, self.__lower_right)
-        self.__window.draw_line(Line(start, end), "white")
-        self.__visible_walls[wall] = False
+        color = "black" if visible else "white"
+        self.__window.draw_line(Line(start, end), color)
+        self.__visible_walls[wall] = True if visible else False

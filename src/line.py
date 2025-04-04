@@ -14,5 +14,5 @@ class Line:
         canvas.create_line(
             self.__start.x, self.__start.y,
             self.__end.x, self.__end.y,
-            fill=fill_color, width=2
+            fill=fill_color, width=2.5
         )
