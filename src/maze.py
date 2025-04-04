@@ -99,3 +99,9 @@ class Maze:
 
                 # Recursively break walls from the neighbor.
                 self._break_walls(n_row, n_col)
+
+    def _reset_cells_visited(self):
+        for row in self.cells:
+            col = self.cells[row]
+            for cell in col:
+                cell.visited = False
